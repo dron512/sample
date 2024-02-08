@@ -14,10 +14,12 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
 import org.springframework.security.web.util.matcher.AndRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
 import java.util.Arrays;
 import java.util.List;
@@ -54,7 +56,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
+    public SecurityFilterChain filterChain(HttpSecurity http, HandlerMappingIntrospector introspector) throws Exception{
 
         http
                 .csrf(csrf->csrf.disable())
@@ -64,18 +66,21 @@ public class SecurityConfig {
                 .authorizeRequests(
                           req ->
                              req.requestMatchers(
-                                             "/css/**",
-                                             "/js/**",
-                                             "/img/**",
-                                             "/assets/**",
-                                             "/auth/**",
-                                             "/guestbook/**",
-                                             "/error/**",
-                                             "/guestbookapi/**",
-                                             "/h2-console/**",
-                                             "/swagger-ui/**",
-                                             "v3/api-docs",
-                                             "/").permitAll()
+                                             new MvcRequestMatcher(introspector,"/css/**"),
+                                             new MvcRequestMatcher(introspector,"/js/**"),
+                                             new MvcRequestMatcher(introspector,"/img/**"),
+                                             new MvcRequestMatcher(introspector,"/assets/**"),
+                                             new MvcRequestMatcher(introspector,"/auth/**"),
+                                             new MvcRequestMatcher(introspector,"/guestbook/**"),
+                                             new MvcRequestMatcher(introspector,"/error/**"),
+                                             new MvcRequestMatcher(introspector,"/guestbookapi/**"),
+                                             new MvcRequestMatcher(introspector,"/console/**"),
+                                             new MvcRequestMatcher(introspector,"/swagger-ui/**"),
+                                             new MvcRequestMatcher(introspector,"/v3/api-docs/**"),
+                                             new MvcRequestMatcher(introspector,"/h2/**"),
+                                             new MvcRequestMatcher(introspector,"/h2"),
+                                             new MvcRequestMatcher(introspector,"/")
+                                     ).permitAll()
 //                                     .requestMatchers("/member").hasRole("ADMIN")
                                 .anyRequest().authenticated()
                      )

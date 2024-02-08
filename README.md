@@ -1,2 +1,2 @@
 ![img.png](img.png)
-![img_1.png](img_1.png)# sample
+![img_1.png](img_1.png)
