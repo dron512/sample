@@ -12,6 +12,7 @@
     <groupId>com.mh</groupId>
     <artifactId>ex05</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <packaging>war</packaging>
     <name>ex05</name>
     <description>Demo project for Spring Boot</description>
     <properties>
